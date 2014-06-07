@@ -42,6 +42,11 @@ def get_most_recent_timestamp(rf, sg):
     return stamp
 
 def merge_scans(rf, sg):
+    rf.ranges = list(rf.ranges)
+    for i in range(30):
+        rf.ranges[i] = 0
+        rf.ranges[len(rf.ranges)-i-1] = 0
+        
     if not sg:
         rf.header.frame_id = 'laser'
         return rf
@@ -52,7 +57,7 @@ def merge_scans(rf, sg):
         global last_scan_time
         if not last_scan_time:
             last_scan_time = time.time()
-        
+
         scan = LaserScan()
         scan.header.frame_id = 'laser'
         scan.header.stamp = get_most_recent_timestamp(rf, sg)    
@@ -63,16 +68,13 @@ def merge_scans(rf, sg):
         scan.time_increment = scan.scan_time / 541
         scan.range_min = rf.range_min
         scan.range_max = rf.range_max
-        if not sg:
-            scan.ranges = rf.ranges
-        else:
-            for i in range(len(rf.ranges)):
-                rrf = rf.ranges[i]
-                rsg = sg.ranges[i]
-                if rrf < rsg:
-                    scan.ranges.append(rrf)
-                else:
-                    scan.ranges.append(rsg)
+        for i in range(len(rf.ranges)):
+            rrf = rf.ranges[i]
+            rsg = sg.ranges[i]
+            if rrf < rsg:
+                scan.ranges.append(rrf)
+            else:
+                scan.ranges.append(rsg)
 
     return scan
 
@@ -86,6 +88,7 @@ while not rospy.is_shutdown():
     if new_data:
         scan = merge_scans(rf_data, sg_data)
         pub.publish(scan)
+        new_data = False
     time.sleep(0.001)
 
 rospy.spin()

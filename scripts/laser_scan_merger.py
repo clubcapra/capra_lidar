@@ -43,8 +43,8 @@ def get_most_recent_timestamp(rf, sg):
 
 def merge_scans(rf, sg):
     rf.ranges = list(rf.ranges)
-    for i in range(30):
-        rf.ranges[i] = 0
+    for i in range(40):
+#        print len(rf.ranges)-i-1
         rf.ranges[len(rf.ranges)-i-1] = 0
         
     if not sg:

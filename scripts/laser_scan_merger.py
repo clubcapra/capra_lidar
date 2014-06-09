@@ -44,9 +44,8 @@ def get_most_recent_timestamp(rf, sg):
 def merge_scans(rf, sg):
     rf.ranges = list(rf.ranges)
     for i in range(40):
-#        print len(rf.ranges)-i-1
         rf.ranges[len(rf.ranges)-i-1] = 0
-        
+
     if not sg:
         rf.header.frame_id = 'laser'
         return rf
@@ -68,20 +67,17 @@ def merge_scans(rf, sg):
         scan.time_increment = scan.scan_time / 541
         scan.range_min = rf.range_min
         scan.range_max = rf.range_max
-        for i in range(len(rf.ranges)):
-            rrf = rf.ranges[i]
-            rsg = sg.ranges[i]
-            if rrf < rsg:
-                scan.ranges.append(rrf)
-            else:
-                scan.ranges.append(rsg)
+        scan.ranges = rf.ranges
+        for i in range(180*2):
+            if sg.ranges[i] < scan.ranges[90 + i] or scan.ranges[90 + i] == 0:
+                scan.ranges[90 + i] = sg.ranges[i]
 
     return scan
 
 rospy.init_node('laser_scan_merger', anonymous=True)
 pub = rospy.Publisher('/base_scan', LaserScan)
 rospy.Subscriber("/scan", LaserScan, rf_callback)
-rospy.Subscriber("/SeaGoatRosClient/VisionScan", LaserScan, sg_callback)
+rospy.Subscriber("/VisionScan", LaserScan, sg_callback)
 
 
 while not rospy.is_shutdown():

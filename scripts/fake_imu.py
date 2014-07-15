@@ -16,7 +16,7 @@ def callback(data):
     imu.orientation.w = quat[3]
     imu.orientation_covariance = [0.001225, 0,        0,
                                   0,        0.001225, 0,
-                                  0,        0,        0.001225]
+                                  0,        0,        0.0001225]
                                   
     imu.header.stamp = rospy.Time.now()
     imu.header.frame_id = "/base_footprint"

@@ -1,5 +1,5 @@
 <launch>
-    <node name="lidar_odom" pkg="capra_lidar" type="pose2D_to_odom.py" output="screen"/>
+    <node pkg="capra_lidar" name="fake_imu" type="fake_imu.py" output="screen"/>
 
     <node pkg="laser_scan_matcher" type="laser_scan_matcher_node" name="laser_scan_matcher_node" output="screen">
         <param name="fixed_frame" value="/odom_laser" />

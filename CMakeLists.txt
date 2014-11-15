@@ -19,8 +19,7 @@ include_directories(
 )
 
 add_executable( scan_to_cloud_hf_node
-    src/scan_to_cloud_hf_node.cpp
-    src/scan_to_cloud_hf.cpp )
+    src/scan_to_cloud_hf_node.cpp )
 
 target_link_libraries(scan_to_cloud_hf_node ${catkin_LIBRARIES} )
 

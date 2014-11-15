@@ -6,7 +6,7 @@
 #include <limits>
 #include <ros/ros.h>
 #include <sensor_msgs/LaserScan.h>
-#include <sensor_msgs/PointCloud.h>
+#include <sensor_msgs/PointCloud2.h>
 
 #include <laser_geometry/laser_geometry.h>
 #include <tf/tf.h>

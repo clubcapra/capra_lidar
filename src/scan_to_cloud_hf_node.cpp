@@ -32,8 +32,9 @@ namespace capra_lidar {
           }
 
           sensor_msgs::PointCloud2 cloud;
+
           projector_.transformLaserScanToPointCloud("/base_link",*scan_in,
-                  cloud,listener_);
+                  cloud,listener_, -1.0, laser_geometry::channel_option::None);
 
       // Do something with cloud.
 

@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-import roslib; roslib.load_manifest('capra_lidar_localization')
+import roslib; roslib.load_manifest('capra_lidar')
 import rospy
 import csv
 from nav_msgs.msg import Odometry
@@ -22,6 +22,6 @@ def callback(data):
     pub.publish(odom)
 
 rospy.init_node('listener', anonymous=True)
-pub = rospy.Publisher('lidar_odom', Odometry)
+pub = rospy.Publisher('/odom', Odometry, queue_size=10)
 rospy.Subscriber("/pose2D", Pose2D, callback)
 rospy.spin()

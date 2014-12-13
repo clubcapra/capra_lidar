@@ -8,10 +8,16 @@ namespace capra_lidar {
     {
       ROS_INFO("Starting ScanToCloudHf");
 
+      std::string cloud_topic;
+      nh_private_.param<std::string>("cloud_topic", cloud_topic, "cloud");
       cloud_publisher_ = nh_.advertise<sensor_msgs::PointCloud2>(
-        "cloud", 1);
+        cloud_topic, 1);
+
+      std::string scan_topic;
+      nh_private_.param<std::string>("scan_topic", scan_topic, "scan");
+      std::cout << scan_topic << std::endl;
       scan_subscriber_ = nh_.subscribe(
-        "scan", 1, &ScanToCloudHf::scanCallback, this);
+       scan_topic, 1, &ScanToCloudHf::scanCallback, this);
     }
 
     ScanToCloudHf::~ScanToCloudHf()
